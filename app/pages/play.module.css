@@ -1,0 +1,27 @@
+
+.play {
+  width: 60%;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.questionText {
+  width: 100%;
+  font-size: 36px;
+  font-weight: 600;
+}
+
+
+.answers {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  justify-content: center;
+}
+
+.correct {
+  color: green;
+}
+
+.incorrect {
+  color: red;
+}

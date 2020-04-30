@@ -20,8 +20,8 @@ module.exports.DestorySchema = knex => {
 
 module.exports.GetRandomQuestion = async () => {
   const count = await db('questions').count('*');
-
-  const offset = Math.floor(Math.random() * count);
+  const offset = Math.floor(Math.random() * count[0].count);
+  console.log(offset);
 
   return db('questions').offset(offset).limit(1);
 }

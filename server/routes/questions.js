@@ -5,19 +5,19 @@ router.get('/', (req, res, next) => {
 
 })
 
-router.get('/random', (req, res, next) => {
+router.get('/random', async (req, res, next) => {
 
   try {
-    const question = await Question.GetRandomQuestion();
+    let question = await Question.GetRandomQuestion();
 
-    return res.json(question);
+    return res.json(question[0]);
   }
   catch(e) {
     return next(e);
   }
 })
 
-router.post('/', (req, res, next) => {
+router.post('/', async (req, res, next) => {
   let questionData = {
     text: req.body.text,
     category_id: req.body.category,
