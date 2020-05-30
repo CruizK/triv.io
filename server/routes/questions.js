@@ -2,7 +2,7 @@ const router = require('express').Router();
 const Question = require('../models/Question');
 
 router.get('/', (req, res, next) => {
-
+    res.json("Normal get");
 })
 
 router.get('/random', async (req, res, next) => {

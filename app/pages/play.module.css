@@ -1,27 +1,54 @@
 
 .play {
-  width: 60%;
+  width: 100%;
   margin: 0 auto;
   text-align: center;
 }
 
+.count {
+  position: fixed;
+  right: 10px;
+  top: 10px;
+  font-size: 30px;
+  background-color: white;
+  border-radius: 50%;
+  padding: 20px;
+}
+
 .questionText {
-  width: 100%;
+  text-align: center;
+  margin: 2% 5%;
+  color:white;
   font-size: 36px;
   font-weight: 600;
 }
 
+.category {
+    margin: 2% 0;
+    color: #eee;
+}
+
+.categoryText {
+    color: #eee;
+}
+
+
 
 .answers {
   display: grid;
+  width: 80%;
+  margin: 0 auto;
   grid-template-columns: 50% 50%;
+  grid-template-rows: 100px 100px;
   justify-content: center;
+  align-items: stretch;
+  grid-gap: 10px;
 }
 
 .correct {
-  color: green;
+  background-color: #3bdd3b !important;
 }
 
 .incorrect {
-  color: red;
+  background-color: #e23e3e !important;
 }

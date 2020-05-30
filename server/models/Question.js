@@ -23,7 +23,7 @@ module.exports.GetRandomQuestion = async () => {
   const offset = Math.floor(Math.random() * count[0].count);
   console.log(offset);
 
-  return db('questions').offset(offset).limit(1);
+  return db('questions').select('questions.*', 'categories.name as category_name').offset(offset).limit(1).join('categories', 'questions.category_id', 'categories.id');
 }
 
 module.exports.CreateQuestion = questionData => {

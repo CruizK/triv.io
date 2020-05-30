@@ -14,6 +14,9 @@ export default function Play() {
 
   const [question, setQuestion] = useState(null);
   const [answer, setAnswer] = useState(null);
+  const [totalQuestions, setTotalQuestions] = useState(0);
+  const [amountCorrect, setAmountCorrect] = useState(0);
+  const [timer, setTimer] = useState(30);
 
   const nextQuestion = async () => {
     try {
@@ -29,8 +32,8 @@ export default function Play() {
       questionData.answers = answers;
 
       questions.push(questionData);
+      console.log(questionData);
       questionIndex++;
-
       setQuestion(questions[questionIndex]);
     }
     catch(e) {
@@ -40,16 +43,19 @@ export default function Play() {
 
   const handleAnswerClick = answer => {
     setAnswer(answer);
-
-    setTimeout(nextQuestion, 3500);
+    if(answer == question.correct_answer) {
+      setAmountCorrect(amountCorrect + 1);
+    }
+    setTotalQuestions(totalQuestions + 1);
+    setTimeout(nextQuestion, 3000);
   }
 
   const mapAnswers = () => {
     return question.answers.map(currAnswer => {
       let className =''
 
-      if(answer && currAnswer == question.correct_answer) className = styles.correct;
-      if(answer && currAnswer != question.correct_answer) className = styles.incorrect;
+      if(answer != null && currAnswer == question.correct_answer) className = styles.correct;
+      if(answer != null && currAnswer != question.correct_answer) className = styles.incorrect;
 
       return <Answer className={className} text={currAnswer} onClick={handleAnswerClick}/>
     })
@@ -59,14 +65,40 @@ export default function Play() {
     nextQuestion();
   }, [])
 
+  useEffect(() => {
+    if(timer > 0) {
+      setTimeout(() => {
+        setTimer(timer - 1);
+      }, 1000)
+    }
+    else {
+      handleAnswerClick('');
+      setTimeout(() => {
+        setTimer(30)
+      }, 3000)
+    }
+    
+  }, [timer])
+
   return (
     <div>
       <Header />
+      <div className={styles.timer}>
+        {timer}
+      </div>
+      <div className={styles.count}>
+        {amountCorrect}/{totalQuestions}
+      </div>
       {question ?
       <div className={styles.play}>
+        <div className={styles.timer}>
 
+        </div>
         <div className={styles.questionText}>
           {question.text}
+        </div>
+        <div className={styles.category}>
+          Category: <span className={styles.categoryText}>{question.category_name}</span>
         </div>
         <div className={styles.answers}>
           {mapAnswers()}

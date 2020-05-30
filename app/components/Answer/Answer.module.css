@@ -1,12 +1,15 @@
 
 .answer {
-  padding: 20px;
-  border: 1px solid black;
-  border-radius: 5px;
-  margin: 5px;
+  padding: 10px;
+  border-radius: 2px;
+  font-size: 26px;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
 }
 
-.answer:hover {
-  
+.color:hover {
+  background-color: #eee;
 }
