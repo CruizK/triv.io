@@ -4,25 +4,50 @@ import styles from './play.module.css'
 import Header from '../components/Header/Header'
 import Footer from '../components/Footer/Footer'
 import Answer from '../components/Answer/Answer'
+import Timer  from '../components/Timer/Timer'
+import QuestionCounter from '../components/QuestionCounter/QuestionCounter'
+import QuestionDisplay from '../components/QuestionDisplay/QuestionDisplay'
 
 import { GetQuestion } from '../lib/questions'
 
+class Play extends React.Component {
 
-let questions = [];
-let questionIndex = -1;
-export default function Play() {
+  constructor(props) {
+    super(props);
+    this.state = {
+      question: null,
+      answer: null,
+      totalQuestions: 0,
+      amountCorrect: 0,
+      time: 30,
+      timerPlayState: 'running'
+    }
 
-  const [question, setQuestion] = useState(null);
-  const [answer, setAnswer] = useState(null);
-  const [totalQuestions, setTotalQuestions] = useState(0);
-  const [amountCorrect, setAmountCorrect] = useState(0);
-  const [timer, setTimer] = useState(30);
+    this.questions = [];
+    this.questionIndex = -1;
 
-  const nextQuestion = async () => {
+    this.nextQuestion = this.nextQuestion.bind(this);
+    this.handleAnswerClick = this.handleAnswerClick.bind(this);
+  }
+
+  componentDidMount() {
+    this.nextQuestion();
+    setInterval(this.updateTimer.bind(this), 1000);
+  }
+
+  updateTimer() {
+    if(this.state.answer == null && this.state.time > 0) {
+      this.setState({time: this.state.time - 1});  
+    }
+    if(this.state.time <= 0 && this.state.answer == null) {
+      this.handleAnswerClick('');
+    }
+  }
+
+  async nextQuestion() {
     try {
-      setAnswer(null);
+      this.setState({answer: null, timerPlayState: 'restart'});
       const questionData = (await GetQuestion()).data;
-  
       let answers = [questionData.correct_answer, questionData.incorrect_answer_1];
   
       if(questionData.incorrect_answer_2) answers.push(questionData.incorrect_answer_2);
@@ -31,82 +56,51 @@ export default function Play() {
       shuffle(answers);
       questionData.answers = answers;
 
-      questions.push(questionData);
+      this.questions.push(questionData);
+      this.questionIndex++;
       console.log(questionData);
-      questionIndex++;
-      setQuestion(questions[questionIndex]);
+      this.setState({
+        question: this.questions[this.questionIndex],
+        timerPlayState: 'running',
+        time: 30
+      })
     }
     catch(e) {
-      console.log(e);
+      console.error(e);
     }
   }
 
-  const handleAnswerClick = answer => {
-    setAnswer(answer);
-    if(answer == question.correct_answer) {
-      setAmountCorrect(amountCorrect + 1);
+  handleAnswerClick(answer) {
+    let newAmountCorrect = this.state.amountCorrect;
+    if(answer == this.state.question.correct_answer) {
+      newAmountCorrect++;
     }
-    setTotalQuestions(totalQuestions + 1);
-    setTimeout(nextQuestion, 3000);
-  }
 
-  const mapAnswers = () => {
-    return question.answers.map(currAnswer => {
-      let className =''
-
-      if(answer != null && currAnswer == question.correct_answer) className = styles.correct;
-      if(answer != null && currAnswer != question.correct_answer) className = styles.incorrect;
-
-      return <Answer className={className} text={currAnswer} onClick={handleAnswerClick}/>
-    })
-  }
-
-  useEffect(() => {
-    nextQuestion();
-  }, [])
-
-  useEffect(() => {
-    if(timer > 0) {
-      setTimeout(() => {
-        setTimer(timer - 1);
-      }, 1000)
-    }
-    else {
-      handleAnswerClick('');
-      setTimeout(() => {
-        setTimer(30)
-      }, 3000)
-    }
     
-  }, [timer])
+    
+    this.setState({
+      answer,
+      totalQuestions: this.state.totalQuestions + 1,
+      timerPlayState: this.state.time <= 0 ? 'restart' : 'paused',
+      amountCorrect: newAmountCorrect
+    })
+    setTimeout(this.nextQuestion, 3000);
+  }
 
-  return (
-    <div>
-      <Header />
-      <div className={styles.timer}>
-        {timer}
-      </div>
-      <div className={styles.count}>
-        {amountCorrect}/{totalQuestions}
-      </div>
-      {question ?
-      <div className={styles.play}>
-        <div className={styles.timer}>
+  
 
-        </div>
-        <div className={styles.questionText}>
-          {question.text}
-        </div>
-        <div className={styles.category}>
-          Category: <span className={styles.categoryText}>{question.category_name}</span>
-        </div>
-        <div className={styles.answers}>
-          {mapAnswers()}
-        </div>
+  render() {
+    return (
+      <div>
+        <Header title={"Triv.io"}/>
+        <Timer time={this.state.time} timerPlayState={this.state.timerPlayState}/>
+        <QuestionCounter amountCorrect={this.state.amountCorrect} totalQuestions={this.state.totalQuestions} />
+        <QuestionDisplay question={this.state.question} answer={this.state.answer} onAnswerClicked={this.handleAnswerClick}/>
+  
+        <Footer />
       </div>
-      : null}
-
-      <Footer />
-    </div>
-  )
+    )
+  }
 }
+
+export default Play;

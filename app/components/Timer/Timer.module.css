@@ -1,0 +1,50 @@
+.timer {
+  position:relative;
+  height: 60px;
+  width: 60px;
+  text-align: center;
+}
+
+.timerText {
+  position: inline-block;
+  color: white;
+  line-height: 60px;
+  font-size: 30px;
+}
+
+.svg {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 60px;
+  height: 60px;
+  transform: rotateY(-180deg) rotateZ(-90deg);
+}
+
+.timerCircle {
+  stroke-dasharray: 168px;
+  stroke-dashoffset: 0px;
+  stroke-linecap: square;
+  stroke-width: 6px;
+  stroke: #22ec54;
+  fill: none;
+  animation: countdown 30s linear forwards;
+}
+
+.timerBackCircle {
+  stroke: #5d5d5d;
+  fill: none;
+  stroke-width: 4px;
+}
+
+
+
+@keyframes countdown {
+  0% {
+    stroke-dashoffset: 0px;
+  }
+  100% {
+    stroke-dashoffset: 169px;
+    stroke: #ff0000;
+  }
+}
