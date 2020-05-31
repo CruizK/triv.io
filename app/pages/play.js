@@ -20,7 +20,8 @@ class Play extends React.Component {
       totalQuestions: 0,
       amountCorrect: 0,
       time: 30,
-      timerPlayState: 'running'
+      timerPlayState: 'running',
+      animationClassName: ''
     }
 
     this.questions = [];
@@ -28,12 +29,15 @@ class Play extends React.Component {
 
     this.nextQuestion = this.nextQuestion.bind(this);
     this.handleAnswerClick = this.handleAnswerClick.bind(this);
+    this.updateTimer = this.updateTimer.bind(this)
   }
 
   componentDidMount() {
     this.nextQuestion();
-    setInterval(this.updateTimer.bind(this), 1000);
+    setTimeout(this.updateTimer, 1000);
   }
+
+  
 
   updateTimer() {
     if(this.state.answer == null && this.state.time > 0) {
@@ -42,6 +46,8 @@ class Play extends React.Component {
     if(this.state.time <= 0 && this.state.answer == null) {
       this.handleAnswerClick('');
     }
+
+    setTimeout(this.updateTimer, 1000)
   }
 
   async nextQuestion() {
@@ -64,6 +70,11 @@ class Play extends React.Component {
         timerPlayState: 'running',
         time: 30
       })
+
+      this.setState({animationClassName: styles.leftToCenter})
+      setTimeout(() => {
+        this.setState({animationClassName: ''})
+      }, 2000)
     }
     catch(e) {
       console.error(e);
@@ -84,18 +95,22 @@ class Play extends React.Component {
       timerPlayState: this.state.time <= 0 ? 'restart' : 'paused',
       amountCorrect: newAmountCorrect
     })
-    setTimeout(this.nextQuestion, 3000);
+    setTimeout(() => {
+      this.setState({animationClassName: styles.centerToRight})
+    }, 3000)
+    setTimeout(this.nextQuestion, 3500);
   }
 
   
 
   render() {
     return (
-      <div>
+      <div className={styles.play}>
         <Header title={"Triv.io"}/>
         <Timer time={this.state.time} timerPlayState={this.state.timerPlayState}/>
         <QuestionCounter amountCorrect={this.state.amountCorrect} totalQuestions={this.state.totalQuestions} />
-        <QuestionDisplay question={this.state.question} answer={this.state.answer} onAnswerClicked={this.handleAnswerClick}/>
+        <QuestionDisplay className={`${this.state.animationClassName}`} 
+          question={this.state.question} answer={this.state.answer} onAnswerClicked={this.handleAnswerClick}/>
   
         <Footer />
       </div>

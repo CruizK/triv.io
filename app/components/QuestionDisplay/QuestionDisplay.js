@@ -1,7 +1,7 @@
 import styles from './QuestionDisplay.module.css'
 import Answer from '../Answer/Answer'
 
-const QuestionDisplay = ({question, answer, onAnswerClicked}) => {
+const QuestionDisplay = ({question, answer, onAnswerClicked, className}) => {
 
   const mapAnswers = () => {
     return question.answers.map(currAnswer => {
@@ -17,7 +17,7 @@ const QuestionDisplay = ({question, answer, onAnswerClicked}) => {
 
   if(question) {
     return (
-      <div className={styles.questionDisplay}>
+      <div className={`${styles.questionDisplay} ${className}`}>
         <div className={styles.questionText}>
           {question.text}
         </div>

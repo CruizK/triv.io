@@ -2,52 +2,32 @@
 .play {
   width: 100%;
   margin: 0 auto;
-  margin-top: 5%;
   text-align: center;
+  overflow: hidden;
 }
 
-
-.questionText {
-  text-align: center;
-  margin: 2% 10%;
-  color:white;
-  font-size: 36px;
-  font-weight: 600;
+.centerToRight {
+  animation: motion 1s ease forwards;
 }
 
-.category {
-    margin: 2% 0;
-    color: #eee;
+.leftToCenter {
+  animation: motionTwo 1s ease;
 }
 
-.categoryText {
-    color: #eee;
-}
-
-
-
-.answers {
-  display: grid;
-  width: 80%;
-  margin: 0 auto;
-  grid-template-columns: 50% 50%;
-  grid-template-rows: 100px 100px;
-  justify-content: center;
-  align-items: stretch;
-  grid-gap: 10px;
-}
-
-@media only screen and (max-width: 900px) {
-  .answers {
-    grid-template-columns: 70%;
-    grid-template-rows: 100px 100px 100px 100px;
+@keyframes motion {
+  0% {
+    transform: translateX(0%)
+  }
+  100% {
+    transform: translateX(150%);
   }
 }
 
-.correct {
-  background-color: #3bdd3b !important;
-}
-
-.incorrect {
-  background-color: #e23e3e !important;
+@keyframes motionTwo {
+  0% {
+    transform: translateX(-150%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
 }
