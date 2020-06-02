@@ -22,13 +22,12 @@
 }
 
 .timerCircle {
-  stroke-dasharray: 168px;
+  stroke-dasharray: 170px;
   stroke-dashoffset: 0px;
-  stroke-linecap: square;
+  stroke-linecap: round;
   stroke-width: 6px;
   stroke: #22ec54;
   fill: none;
-  animation: countdown 30s linear forwards;
 }
 
 .timerBackCircle {
@@ -44,7 +43,6 @@
     stroke-dashoffset: 0px;
   }
   100% {
-    stroke-dashoffset: 169px;
-    stroke: #ff0000;
+    stroke-dashoffset: 170px;
   }
 }

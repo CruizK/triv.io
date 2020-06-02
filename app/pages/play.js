@@ -34,20 +34,24 @@ class Play extends React.Component {
 
   componentDidMount() {
     this.nextQuestion();
-    setTimeout(this.updateTimer, 1000);
+    setTimeout(this.updateTimer, 100);
   }
 
   
 
   updateTimer() {
     if(this.state.answer == null && this.state.time > 0) {
-      this.setState({time: this.state.time - 1});  
+      this.setState({time: this.state.time - .1});  
     }
     if(this.state.time <= 0 && this.state.answer == null) {
       this.handleAnswerClick('');
+      setTimeout(this.updateTimer, 4000)
+    }
+    else {
+      setTimeout(this.updateTimer, 100)
     }
 
-    setTimeout(this.updateTimer, 1000)
+
   }
 
   async nextQuestion() {
@@ -68,7 +72,7 @@ class Play extends React.Component {
       this.setState({
         question: this.questions[this.questionIndex],
         timerPlayState: 'running',
-        time: 30
+        time: 15
       })
 
       this.setState({animationClassName: styles.leftToCenter})
@@ -92,7 +96,7 @@ class Play extends React.Component {
     this.setState({
       answer,
       totalQuestions: this.state.totalQuestions + 1,
-      timerPlayState: this.state.time <= 0 ? 'restart' : 'paused',
+      timerPlayState: 'paused',
       amountCorrect: newAmountCorrect
     })
     setTimeout(() => {
