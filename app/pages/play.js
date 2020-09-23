@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react'
-import shuffle from 'shuffle-array'
+import React from 'react'
 import styles from './play.module.css'
+import shuffle from 'shuffle-array'
+
 import Header from '../components/Header/Header'
 import Footer from '../components/Footer/Footer'
-import Answer from '../components/Answer/Answer'
 import Timer  from '../components/Timer/Timer'
 import QuestionCounter from '../components/QuestionCounter/QuestionCounter'
 import QuestionDisplay from '../components/QuestionDisplay/QuestionDisplay'
@@ -19,7 +19,7 @@ class Play extends React.Component {
       answer: null,
       totalQuestions: 0,
       amountCorrect: 0,
-      time: 30,
+      time: 15,
       timerPlayState: 'running',
       animationClassName: ''
     }
@@ -86,6 +86,7 @@ class Play extends React.Component {
   }
 
   handleAnswerClick(answer) {
+    if(this.state.answer != null) return;
     let newAmountCorrect = this.state.amountCorrect;
     if(answer == this.state.question.correct_answer) {
       newAmountCorrect++;
@@ -110,7 +111,7 @@ class Play extends React.Component {
   render() {
     return (
       <div className={styles.play}>
-        <Header title={"Triv.io"}/>
+        <Header title={"Triv.io"} color={this.state.amountCorrect % 2 == 0 ? 'blue' : 'green'}/>
         <Timer time={this.state.time} timerPlayState={this.state.timerPlayState}/>
         <QuestionCounter amountCorrect={this.state.amountCorrect} totalQuestions={this.state.totalQuestions} />
         <QuestionDisplay className={`${this.state.animationClassName}`} 

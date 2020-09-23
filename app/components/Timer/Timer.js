@@ -11,7 +11,7 @@ const Timer = ({time, timerPlayState}) => {
       <circle r="27" cx="30" cy="30" className={styles.timerBackCircle}></circle>
       {timerPlayState == 'restart' ? null : 
       <circle r="27" cx="30" cy="30" className={styles.timerCircle} 
-        style={{animationPlayState:timerPlayState, strokeDashoffset:`${170 * (1-time/30)}px`}}></circle>
+        style={{animationPlayState:timerPlayState, strokeDashoffset:`${Math.floor(170 * (1-time/30))}px`}}></circle>
       }
     </svg>
   </div>
