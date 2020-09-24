@@ -1,4 +1,5 @@
 const db = require('../db');
+const random = require('seedrandom');
 
 module.exports.Schema = knex => {
   return knex.schema.createTable('questions', table => {
@@ -17,14 +18,31 @@ module.exports.DestorySchema = knex => {
   return knex.schema.dropTable('questions')
 }
 
+module.exports.GetSingleQuestion = async offset => {
+  return db('questions')
+    .select('questions.*', 'categories.name as category_name')
+    .offset(offset)
+    .limit(1)
+    .join('categories', 'questions.category_id', 'categories.id');
+}
 
 module.exports.GetRandomQuestion = async () => {
   const count = await db('questions').count('*');
   const offset = Math.floor(Math.random() * count[0].count);
   console.log(offset);
 
-  return db('questions').select('questions.*', 'categories.name as category_name').offset(offset).limit(1).join('categories', 'questions.category_id', 'categories.id');
+  return this.GetSingleQuestion(offset);
 }
+
+module.exports.GetFromSeed = async (seed, index) => {
+  const count = await db('questions').count('*');
+  console.log(random(seed), random(index));
+  const offset = Math.floor(random(seed).quick() * random(index).quick() * count[0].count);
+  if(offset >= count) offset = offset % count;
+  console.log(offset);
+  return this.GetSingleQuestion(offset);
+}
+
 
 module.exports.CreateQuestion = questionData => {
   return db('questions').insert(questionData).returning('id');

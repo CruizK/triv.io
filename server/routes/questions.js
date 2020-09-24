@@ -5,6 +5,19 @@ router.get('/', (req, res, next) => {
     res.json("Normal get");
 })
 
+router.get('/seed/:seed/:index', async(req, res, next) => {
+
+  try {
+    let question = await Question.GetFromSeed(req.params.seed, req.params.index);
+
+    return res.json(question[0]);
+  }
+  catch(e) {
+    return next(e);
+  }
+})
+
+
 router.get('/random', async (req, res, next) => {
 
   try {
