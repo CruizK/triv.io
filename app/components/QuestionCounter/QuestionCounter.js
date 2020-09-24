@@ -4,7 +4,7 @@ const QuestionCounter = ({amountCorrect, totalQuestions}) => {
 
   return (
     <div className={styles.count}>
-      {amountCorrect}/{totalQuestions}
+      Score: {amountCorrect}/{totalQuestions}
     </div>
   )
 }
